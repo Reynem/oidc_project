@@ -6,19 +6,19 @@ import (
 )
 
 type MainService struct {
-	repo repo.MainRepository
+	repo *repo.MainRepository
 }
 
 func NewMainService(repo repository.MainRepository) *MainService {
-	return &MainService{repo: repo}
+	return &MainService{repo: &repo}
 }
 
-func (m MainService) WriteData(data string) error {
+func (m *MainService) WriteData(data string) error {
 	err := m.repo.WriteData(data)
 	return err
 }
 
-func (m MainService) ReadData() (string, error) {
+func (m *MainService) ReadData() (string, error) {
 	data, err := m.repo.ReadData()
 	if err != nil {
 		return "", err
@@ -26,7 +26,7 @@ func (m MainService) ReadData() (string, error) {
 	return data, nil
 }
 
-func (m MainService) CleanData() error {
+func (m *MainService) CleanData() error {
 	err := m.repo.CleanData()
 	return err
 }

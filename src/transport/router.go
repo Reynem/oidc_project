@@ -2,6 +2,7 @@ package transport
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"oidc_project/dto"
 	"oidc_project/models"
@@ -9,21 +10,24 @@ import (
 )
 
 type MainController struct {
-	serv services.MainService
+	serv *services.MainService
 }
 
 func NewMainController(serv services.MainService) *MainController {
-	return &MainController{serv: serv}
+	return &MainController{serv: &serv}
 }
 
-func (m *MainController) GetData(w http.ResponseWriter, r *http.Request) *dto.MainResponse {
+func (m *MainController) GetData(w http.ResponseWriter, r *http.Request) {
 	data, err := m.serv.ReadData()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		return &dto.MainResponse{Data: ""}
+		log.Println(err)
+		return
 	}
 
-	return &dto.MainResponse{Data: data}
+	response := dto.MainResponse{Data: data}
+
+	json.NewEncoder(w).Encode(response)
 }
 
 func (m *MainController) WriteData(w http.ResponseWriter, r *http.Request) {
