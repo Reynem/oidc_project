@@ -11,6 +11,10 @@ func (m MainRepository) WriteData(new_data string) error {
 	return nil
 }
 
+func NewMainRepository() *MainRepository {
+	return &MainRepository{}
+}
+
 func (m MainRepository) ReadData() (string, error) {
 	if m.data == "" {
 		return "", fmt.Errorf("Database has no data!")
